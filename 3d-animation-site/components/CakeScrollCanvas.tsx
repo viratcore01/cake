@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useScroll, useMotionValueEvent } from 'framer-motion';
+import { useScroll, useMotionValueEvent, useSpring } from 'framer-motion';
 
 const frameNames = [
   "Create_video_breaking_202604251826_001.jpg",
@@ -29,6 +29,14 @@ export default function CakeScrollCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const { scrollYProgress } = useScroll();
+
+  // Create a smoothed spring version of the scroll progress
+  // This adds momentum and dampening to the scroll for ultra-smoothness
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   // Preload images
   useEffect(() => {
@@ -89,16 +97,16 @@ export default function CakeScrollCanvas() {
   useEffect(() => {
     const handleResize = () => {
       if (images.length > 0) {
-        const frameIndex = Math.floor(scrollYProgress.get() * (images.length - 1));
+        const frameIndex = Math.floor(smoothProgress.get() * (images.length - 1));
         drawFrame(images, frameIndex);
       }
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [images, scrollYProgress]);
+  }, [images, smoothProgress]);
 
-  // Framer Motion hook to track scroll
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  // Framer Motion hook to track smoothed scroll
+  useMotionValueEvent(smoothProgress, "change", (latest: number) => {
     if (images.length === 0) return;
     let frameIndex = Math.floor(latest * (images.length - 1));
     // Clamp

@@ -10,7 +10,7 @@ export default function Home() {
       <CakeScrollCanvas />
 
       {/* 2. Scrollable Content wrapper */}
-      <div className="relative z-10 w-full" style={{ height: '400vh' }}>
+      <div className="relative z-10 w-full" style={{ height: '600vh' }}>
         
         {/* Section 1: Hero */}
         <section className="h-screen w-full flex flex-col items-center justify-center px-6">
