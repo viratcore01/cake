@@ -1,13 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowDown } from 'lucide-react'
 
 export default function Header() {
-  const scrollToContent = () => {
-    const element = document.getElementById('gallery')
-    element?.scrollIntoView({ behavior: 'smooth' })
-  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-dark/30 border-b border-accent/20">
