@@ -23,7 +23,7 @@ function AnimatedSphere() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
       meshRef.current.rotation.x += 0.001
       meshRef.current.rotation.y += 0.002
